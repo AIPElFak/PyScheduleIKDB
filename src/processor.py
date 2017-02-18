@@ -16,9 +16,19 @@ def push_to_dict(dct, key, value):
         dct[key].append(value)
 
 
-def push_suggestions(dct, suggestions):
+def push_node_suggestions(suggestions):
     for s in suggestions:
-        push_to_dict(dct, s['name'], s)
+        push_to_dict(node_suggestion_dict, s['name'], s)
+
+
+def push_link_suggestions(suggestions):
+    for s in suggestions:
+        # moguce obrisati s['type'] ako je dozvoljena samo jedna usmerena veza nezavisno od tipa
+        if s['suggestion_type'] == 'CREATE':
+            key = s['node_from'] + ' ' + s['node_to'] + ' ' + s['type']
+        else:
+            key = s['link_id']
+        push_to_dict(link_suggestion_dict, key, s)
 
 
 def get_max_suggestion(array):

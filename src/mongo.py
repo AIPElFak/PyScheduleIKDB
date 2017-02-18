@@ -18,7 +18,6 @@ def get_node_suggestions():
 
 def get_link_suggestions():
     suggestions = link_suggestions.find()
-    print(suggestions.count())
     return suggestions
 
 
@@ -50,5 +49,4 @@ def delete_old_data():
     delete_old_link_suggestions()
     # ne brise se iz redis-a, za sad ne mora ni ovde
     # delete_old_unverified_users()
-
 
