@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from CONST import time_delta
 
 client = MongoClient('localhost', 27017)
-db = client['test']
+db = client.test
 # test je ime db
 node_suggestions = db['nodesuggestions']
 link_suggestions = db['linksuggestions']
@@ -12,12 +12,12 @@ users = db['users']
 
 
 def get_node_suggestions():
-    suggestions = node_suggestions.find()
+    suggestions = node_suggestions.find({})
     return suggestions
 
 
 def get_link_suggestions():
-    suggestions = link_suggestions.find()
+    suggestions = link_suggestions.find({})
     return suggestions
 
 
@@ -37,7 +37,7 @@ def delete_old_unverified_users():
 
 
 def instant_delete_node_suggestions(delete_array):
-    node_suggestions.delete_many({'_id': {'$in': delete_array}})
+    MongoClient('localhost', 27017).test.nodesuggestions.delete_many({'_id': {'$in': delete_array}})
 
 
 def instant_delete_link_suggestions(delete_array):

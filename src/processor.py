@@ -63,3 +63,8 @@ def get_instant_delete(array):
         if pom < MIN_VOTES_SUM:
             delete_array.append(item)
     return delete_array
+
+
+def clear_data():
+    node_suggestion_dict.clear()
+    link_suggestion_dict.clear()

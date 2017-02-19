@@ -70,7 +70,10 @@ def process_node_suggestion(suggestion):
                 new_node = db.nodes.create(name=suggestion['name'],
                                            definition=suggestion['definition'],
                                            description=suggestion['description'],
-                                           votes=votes_sum)
+                                           votes_for=['placeholder1'],
+                                           votes_against=['placeholder2'])
+                new_node['votes_for'] = suggestion['votes_for']
+                new_node['votes_against'] = suggestion['votes_against']
                 for label in suggestion['types']:
                     new_node.labels.add(label)
                 refresh_node_array()
@@ -81,13 +84,15 @@ def process_node_suggestion(suggestion):
         elif suggestion_type == "EDIT":
             pom = get_node_by_name(suggestion['name'])
             if pom is not None:
-                if votes_sum > pom['votes']:
+                pom_votes = len(pom['votes_for']) - len(pom['votes_against'])
+                if votes_sum > pom_votes:
                     pom['name'] = suggestion['name']
                     pom['definition'] = suggestion['definition']
                     pom['description'] = suggestion['description']
                     if suggestion['types'] is not None:
                         pom.labels = suggestion['types']
-                    pom['votes'] = votes_sum
+                    pom['votes_for'] = suggestion['votes_for']
+                    pom['votes_against'] = suggestion['votes_against']
 
                     refresh_node_array()
                     node_suggestion_delete_array.append(suggestion['_id'])
@@ -96,7 +101,8 @@ def process_node_suggestion(suggestion):
         elif suggestion_type == "DELETE":
             pom = get_node_by_name(suggestion['name'])
             if pom is not None:
-                if votes_sum > pom['votes']:
+                pom_votes = len(pom['votes_for']) - len(pom['votes_against'])
+                if votes_sum > pom_votes:
                     pom.delete()
                     refresh_node_array()
                     node_suggestion_delete_array.append(suggestion['_id'])
@@ -168,3 +174,8 @@ def process_link_suggestion(suggestion):
 def process_link_suggestions(suggestion_array):
     for suggestion in suggestion_array:
         process_link_suggestion(suggestion)
+
+
+def clear_data():
+    node_suggestion_delete_array.clear()
+    link_suggestion_delete_array.clear()

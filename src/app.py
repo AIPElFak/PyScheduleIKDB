@@ -21,6 +21,8 @@ def event_callback():
         neo4j.get_link_suggestion_delete_array()
     )
     mongo.delete_old_data()
+    processor.clear_data()
+    neo4j.clear_data()
     Timer(PROCESS_INTERVAL, event_callback).start()
 
 
