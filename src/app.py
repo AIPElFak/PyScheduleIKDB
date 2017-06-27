@@ -1,6 +1,7 @@
 import mongo
 import neo4j
 import processor
+import requests
 from threading import Timer
 
 from CONST import PROCESS_INTERVAL
@@ -23,6 +24,7 @@ def event_callback():
     mongo.delete_old_data()
     processor.clear_data()
     neo4j.clear_data()
+    requests.get('http://127.0.0.1:3000/serverupdate')
     Timer(PROCESS_INTERVAL, event_callback).start()
 
 
